@@ -1,0 +1,38 @@
+version: "3"
+services:
+  service-warehouse-db:
+    image: mongo:3.6
+    container_name: "warehouse-db"
+    hostname: service-warehouse-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: warehouse
+    ports:
+      - 27017:27017
+    networks:
+      - warehouse-network
+    command: ["--bind_ip", "0.0.0.0"]
+  service-warehouse-api:
+    container_name: "warehouse-api"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: service-digital-warehouse:latest
+    environment:
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: warehouse
+      SPRING_DATA_MONGODB_HOST: service-warehouse-db
+      SPRING_DATA_MONGODB_USERNAME: admin
+      SPRING_DATA_MONGODB_PASSWORD: admin
+      SPRING_DATA_MONGODB_DATABASE: warehouse
+    links:
+      - service-warehouse-db
+    depends_on:
+      - service-warehouse-db
+    ports:
+      - 8080:8080
+    networks:
+      - warehouse-network
+networks:
+  warehouse-network:
+    driver: bridge

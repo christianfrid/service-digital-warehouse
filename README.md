@@ -9,7 +9,7 @@ A service for importing, browsing and selling different wares.
 ## Install and run
 Build java service
 ```bash
-$ mvn clean install
+$ mvn clean package
 ```
 ## 
 Build images, set up network and open ports
@@ -25,13 +25,4 @@ $ docker-compose up
 Swagger
 ```bash
 $ open http://localhost:8080/swagger-ui.html
-```
-#
-### Notes
-Create user (TODO automize this step)
-```bash
-$ docker exec -it warehouse-db bash
-$ mongo -u admin -p example
-$ use warehouse
-$ db.createUser({user: "user", pwd: "example", roles : [{role: "readWrite", db: "warehouse"}]});
 ```

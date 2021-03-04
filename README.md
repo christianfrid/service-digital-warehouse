@@ -20,3 +20,8 @@ Start service and database
 ```bash
 $ docker-compose up
 ```
+## 
+Swagger
+```bash
+$ open http://localhost:8080/swagger-ui.html
+```

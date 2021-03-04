@@ -1,6 +1,6 @@
 version: "3"
 services:
-  service-warehouse-db:
+  mongodb:
     image: mongo:3.6
     container_name: "warehouse-db"
     hostname: service-warehouse-db
@@ -14,22 +14,16 @@ services:
       - warehouse-network
     command: ["--bind_ip", "0.0.0.0"]
 
-  service-warehouse-api:
-    container_name: "warehouse-api"
+  service-warehouse:
+    container_name: "service-digital-warehouse"
     build:
       context: .
       dockerfile: Dockerfile
     image: service-digital-warehouse:latest
-    environment:
-      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: warehouse
-      SPRING_DATA_MONGODB_HOST: service-warehouse-db
-      SPRING_DATA_MONGODB_USERNAME: admin
-      SPRING_DATA_MONGODB_PASSWORD: admin
-      SPRING_DATA_MONGODB_DATABASE: warehouse
     links:
-      - service-warehouse-db
+      - mongodb
     depends_on:
-      - service-warehouse-db
+      - mongodb
     ports:
       - 8080:8080
     networks:

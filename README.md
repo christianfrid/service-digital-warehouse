@@ -14,7 +14,7 @@ $ mvn clean install
 ## 
 Build images, set up network and open ports
 ```bash
-$ docker-compose build
+$ docker-compose build --no-cache
 ```
 ## 
 Start service and database
@@ -25,4 +25,13 @@ $ docker-compose up
 Swagger
 ```bash
 $ open http://localhost:8080/swagger-ui.html
+```
+#
+### Notes
+Create user (TODO automize this step)
+```bash
+$ docker exec -it warehouse-db bash
+$ mongo -u admin -p example
+$ use warehouse
+$ db.createUser({user: "user", pwd: "example", roles : [{role: "readWrite", db: "warehouse"}]});
 ```

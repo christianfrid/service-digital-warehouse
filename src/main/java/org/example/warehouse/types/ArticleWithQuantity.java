@@ -5,10 +5,9 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 @Data
-public class ProductContainsArticles {
+public class ArticleWithQuantity {
     @Id
     @NonNull
     private long artId;
     private int amountOf;
-
 }

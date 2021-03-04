@@ -2,8 +2,9 @@
 A service for importing, browsing and selling different wares.
 
 ## Requirements
-- Docker
-- Maven
+- [Java 11](https://www.oracle.com/se/java/technologies/javase-jdk11-downloads.html)
+- [Maven](https://maven.apache.org/download.cgi)
+- [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Install and run
 Build java service

@@ -15,12 +15,14 @@ public class WarehouseController {
     @Operation(summary = "Upload inventory")
     @GetMapping("/inventory")
     public ResponseEntity<String> uploadInventory() {
+        log.info("/v1/inventory reached");
         return ResponseEntity.ok("Ok");
     }
 
     @Operation(summary = "Upload products")
     @GetMapping("/products")
     public ResponseEntity<String> uploadProducts() {
+        log.info("/v1/products reached");
         return ResponseEntity.ok("Ok");
     }
 

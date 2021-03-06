@@ -6,8 +6,11 @@ import org.example.warehouse.repository.ProductRepository;
 import org.example.warehouse.types.Article;
 import org.example.warehouse.types.ArticleWithQuantity;
 import org.example.warehouse.types.Product;
+import org.example.warehouse.types.ProductStock;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,6 +28,43 @@ public class ShoppingService {
     public ShoppingService(ArticleRepository articleRepository, ProductRepository productRepository) {
         this.articleRepository = articleRepository;
         this.productRepository = productRepository;
+    }
+
+    public List<ProductStock> getProductStock() {
+        // Extract full inventory
+        Map<Long, Integer> inventoryStock = articleRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(Article::getArtId, Article::getStock));
+
+        // Loop all products and calculate available stock
+        return productRepository.findAll().stream()
+                .map(product -> toProductStock(product, inventoryStock))
+                .collect(Collectors.toList());
+    }
+
+    private ProductStock toProductStock(Product product, Map<Long, Integer> inventoryStock) {
+        Map<Long, Integer> neededStock = product.getArticlesWithQuantities().stream()
+                .collect(Collectors.toMap(ArticleWithQuantity::getArtId, ArticleWithQuantity::getStock));
+
+        int calculatedProductStock = neededStock.entrySet().stream()
+                .map(articleStock -> divide(articleStock.getValue(), inventoryStock.get(articleStock.getKey())))
+                .min(Integer::compareTo)
+                .orElse(0);
+
+        return ProductStock.builder()
+                .name(product.getName())
+                .stock(calculatedProductStock)
+                .build();
+    }
+
+    private int divide(int neededStock, int availableStock) {
+        if (neededStock <= 0 || availableStock <= 0) {
+            log.info("Stock was zero or negative. neededStock={}, availableStock={}", neededStock, availableStock);
+            return 0;
+        }
+        BigDecimal divided = new BigDecimal(availableStock / neededStock);
+        divided = divided.setScale(0, RoundingMode.FLOOR);
+        return divided.intValueExact();
     }
 
     public String sellProduct(String productName) {

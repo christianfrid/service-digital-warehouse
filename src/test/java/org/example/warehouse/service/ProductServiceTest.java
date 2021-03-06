@@ -25,7 +25,7 @@ public class ProductServiceTest {
 
     @Test
     @SneakyThrows
-    void verifyUploadTwoProducts() {
+    void verifyUploadProducts() {
         MultipartFile file = createProductsTestFile();
         productService.saveProducts(file);
         verify(productRepository, times(2)).save(any());

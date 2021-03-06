@@ -22,7 +22,11 @@ Start service and database
 $ docker-compose up
 ```
 ## 
-Swagger
+Swagger Mac/Linux
 ```bash
 $ open http://localhost:8080/swagger-ui.html
+```
+Swagger Windows
+```bash
+$ start http://localhost:8080/swagger-ui.html
 ```

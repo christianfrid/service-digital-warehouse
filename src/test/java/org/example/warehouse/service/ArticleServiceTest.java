@@ -25,7 +25,7 @@ public class ArticleServiceTest {
 
     @Test
     @SneakyThrows
-    void verifyUploadTwoArticles() {
+    void verifyUploadArticles() {
         MultipartFile file = createInventoryTestFile();
         articleService.saveInventory(file);
         verify(articleRepository, times(4)).save(any());

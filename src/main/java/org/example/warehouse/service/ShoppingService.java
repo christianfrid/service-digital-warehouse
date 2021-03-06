@@ -37,13 +37,15 @@ public class ShoppingService {
                 .collect(Collectors.toMap(Article::getArtId, Article::getStock));
 
         // Loop all products and calculate available stock
-        return productRepository.findAll().stream()
+        return productRepository.findAll()
+                .stream()
                 .map(product -> toProductStock(product, inventoryStock))
                 .collect(Collectors.toList());
     }
 
     private ProductStock toProductStock(Product product, Map<Long, Integer> inventoryStock) {
-        Map<Long, Integer> neededStock = product.getArticlesWithQuantities().stream()
+        Map<Long, Integer> neededStock = product.getArticlesWithQuantities()
+                .stream()
                 .collect(Collectors.toMap(ArticleWithQuantity::getArtId, ArticleWithQuantity::getStock));
 
         int calculatedProductStock = neededStock.entrySet().stream()
@@ -75,7 +77,8 @@ public class ShoppingService {
         }
 
         // Get how many of each article type is needed
-        Map<Long, Integer> neededStock = product.getArticlesWithQuantities().stream()
+        Map<Long, Integer> neededStock = product.getArticlesWithQuantities()
+                .stream()
                 .collect(Collectors.toMap(ArticleWithQuantity::getArtId, ArticleWithQuantity::getStock));
 
         // Get current stock for each needed article
@@ -118,7 +121,8 @@ public class ShoppingService {
     private boolean canSell(Map<Long, Integer> neededStock, Map<Long, Integer> currentStock) {
         return !neededStock.isEmpty() &&
                 !currentStock.isEmpty() &&
-                currentStock.entrySet().stream()
+                currentStock.entrySet()
+                        .stream()
                         .allMatch(articleStock -> articleStock.getValue() >= neededStock.get(articleStock.getKey()));
     }
 }

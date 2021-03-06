@@ -8,6 +8,7 @@ class ServiceDigitalWarehouseApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// just start...
 	}
 
 }

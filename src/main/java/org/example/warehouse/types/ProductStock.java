@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "API model for a product stock")
+@Schema(description = "API model for showing stock of a product with name")
 public class ProductStock {
     private String name;
     private int stock;

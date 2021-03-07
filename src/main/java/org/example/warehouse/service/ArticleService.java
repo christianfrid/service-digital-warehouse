@@ -34,7 +34,7 @@ public class ArticleService {
         try {
             String json = IOUtils.toString(inventoryFile.getInputStream(), StandardCharsets.UTF_8.name());
             Inventory inventory = objectMapper.readValue(json, Inventory.class);
-            inventory.getInventory().forEach(article -> articleRepository.save(article));
+            inventory.getInventory().forEach(articleRepository::save);
         } catch (IOException e) {
             log.error("Couldn't read input file:", e);
         }

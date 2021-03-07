@@ -43,7 +43,10 @@ public class ShoppingService {
                 .collect(Collectors.toList());
     }
 
-    private ProductStock toProductStock(Product product, Map<Long, Integer> inventoryStock) {
+    /**
+     * protected method is package private. Then it's testable.
+     */
+    protected ProductStock toProductStock(Product product, Map<Long, Integer> inventoryStock) {
         Map<Long, Integer> neededStock = product.getArticlesWithQuantities()
                 .stream()
                 .collect(Collectors.toMap(ArticleWithQuantity::getArtId, ArticleWithQuantity::getStock));
@@ -59,7 +62,10 @@ public class ShoppingService {
                 .build();
     }
 
-    private int divide(int neededStock, int availableStock) {
+    /**
+     * protected method is package private. Then it's testable.
+     */
+    protected int divide(int neededStock, int availableStock) {
         if (neededStock <= 0 || availableStock <= 0) {
             log.info("Stock was zero or negative. neededStock={}, availableStock={}", neededStock, availableStock);
             return 0;
@@ -113,12 +119,10 @@ public class ShoppingService {
     }
 
     /**
-     * Verify all requested articles are in (enough) stock
-     * @param neededStock
-     * @param currentStock
-     * @return
+     * Verify all requested articles are in (enough) stock.
+     * protected method is package private. Then it's testable.
      */
-    private boolean canSell(Map<Long, Integer> neededStock, Map<Long, Integer> currentStock) {
+    protected boolean canSell(Map<Long, Integer> neededStock, Map<Long, Integer> currentStock) {
         return !neededStock.isEmpty() &&
                 !currentStock.isEmpty() &&
                 currentStock.entrySet()
